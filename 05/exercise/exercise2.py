@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+from PIL import Image
+from pathlib import Path
+from torch.utils.data import Dataset, DataLoader
+
+class MyDataset(Dataset):
+
+
+    def __init__(self, dataset_dir):
+        dir_path_resolved = Path(dataset_dir).resolve()
+        dir_list = list(dir_path_resolved)
+        self.img_list = list(dir_path_resolved.glob("*.png"))
+        
+
+
+    def __len__(self):
+        return len(self.img_list)
+
+    def __getitem__(self, idx):
+        img_path = self.img_list[idx]
+        img = Image.open(img_path)
+        return img
+
+
+if __name__ == "__main__":
+    my_dataset = MyDataset("./data")
+    print("---Number of files in the dataset---")
+    print(len(my_dataset))
+    print("---Putput the size of the image file---")
+    print(my_dataset[0].size)
+    plt.imshow(my_dataset[0])
+    plt.show()
+    
